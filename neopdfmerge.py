@@ -8,15 +8,20 @@ import img2pdf
 import os
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
-def neoconvert(manga_source,manga_id,number_of_page):
-    foldername = manga_id
-    img_group = manga_id
-    for x in range(1,number_of_page):
-        pdf_bytes = img2pdf.convert([foldername+"/"+str(x)+".jpg"])
-        file = open("./"+manga_source+"/"+foldername+"/"+img_group+".pdf","wb")
-        file.write(pdf_bytes)
-    print("Done convert : "+str(number_of_page)+" pages of "+foldername+" to pdf")
-    print("PDF location : ./"+manga_source+"/"+foldername+"/")
+
+from PyPDF2 import PdfFileMerger
+
+pdfs = ['wo1/pdf/1160388_1.pdf', 'wo1/pdf/1160388_2.pdf']
+imgs = ['wo1/1160388_1.jpg', 'wo1/1160388_2.jpg']
+
+merger = PdfFileMerger()
+
+for pdf in pdfs:
+    merger.append(pdf)
+
+merger.write("result.pdf")
+with open("result2.pdf","wb") as f:
+	f.write(img2pdf.convert(imgs))
 
 # # Creating a routine that appends files to the output file
 # def append_pdf(input,output):
